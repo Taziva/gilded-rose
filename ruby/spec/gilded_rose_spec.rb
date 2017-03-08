@@ -48,6 +48,16 @@ describe GildedRose do
         gilded_rose = GildedRose.new(items).update_quality()
         expect(items[0].quality).to eq 11
       end
+      it "actually increases in Quality by 2 after the sell_in" do
+        items = [Item.new('Aged Brie',0,10)]
+        gilded_rose = GildedRose.new(items).update_quality()
+        expect(items[0].quality).to eq 12
+      end
+      it "actually reduces Sell in by 1" do
+        items = [Item.new('Aged Brie',4,10)]
+        gilded_rose = GildedRose.new(items).update_quality()
+        expect(items[0].sell_in).to eq 3
+      end
     end
 
     context "Sulfuras, Hand of Ragnaros" do
@@ -89,6 +99,33 @@ describe GildedRose do
         gilded_rose = GildedRose.new(items).update_quality()
         expect(items[0].quality).to eq 50
       end
+      it "Sell in decreases by 1" do
+        items = [Item.new('Backstage passes to a TAFKAL80ETC concert',10,30)]
+        gilded_rose = GildedRose.new(items).update_quality()
+        expect(items[0].sell_in).to eq 9
+      end
+    end
+  end
+  context "Conjured" do
+    it "degrade at twice the normal amount " do
+      items = [Item.new('Conjured Cake',10,10)]
+      gilded_rose = GildedRose.new(items).update_quality()
+      expect(items[0].quality).to eq 8
+    end
+    it "degrade at twice the normal amount after sell by date " do
+      items = [Item.new('Conjured Cake',0,10)]
+      gilded_rose = GildedRose.new(items).update_quality()
+      expect(items[0].quality).to eq 6
+    end
+    it "reduces sell in date by 1" do
+      items = [Item.new('Conjured Cake',3,10)]
+      gilded_rose = GildedRose.new(items).update_quality()
+      expect(items[0].sell_in).to eq 2
+    end
+    it "Quality is never more than 50" do
+      items = [Item.new('Conjured Cake',10,50)]
+      gilded_rose = GildedRose.new(items).update_quality()
+      expect(items[0].quality).to eq 50
     end
   end
 end
