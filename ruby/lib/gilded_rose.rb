@@ -43,7 +43,7 @@ class GildedRose
     end
 
     def valid_quality?(quality)
-        quality > MIN_QUALITY && quality < MAX_QUALITY
+        quality >= MIN_QUALITY && quality < MAX_QUALITY
     end
 
     def legendary_item?(name)
@@ -53,11 +53,13 @@ class GildedRose
     def deduct_quality(item)
         item.quality -= CHANGE
         item.quality -= CHANGE if conjured?(item)
+        item.quality = MIN_QUALITY if item.quality < MIN_QUALITY
     end
 
     def add_quality(item)
         item.quality += CHANGE
         item.quality += CHANGE if conjured?(item)
+        item.quality = MAX_QUALITY if item.quality > MAX_QUALITY
     end
 
     def decrease_sell_in(item)
